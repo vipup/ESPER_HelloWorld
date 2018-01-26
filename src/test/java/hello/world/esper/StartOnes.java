@@ -19,7 +19,7 @@ public class StartOnes {
         Configuration configuration = new Configuration();
         configuration.addEventType("TemperatureEvent", TemperatureEvent.class.getName()); 
 
-        temperatureEventHandler.epService = EPServiceProviderManager.getProvider("TestStockTickerSimple", configuration);
+        temperatureEventHandler.epService = EPServiceProviderManager.getProvider("NucleaTemperatureHandling", configuration);
 
 		
         temperatureEventHandler.monitorEventSubscriber = new MonitorEventSubscriber(); 
