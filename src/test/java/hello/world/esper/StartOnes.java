@@ -54,7 +54,7 @@ public class StartOnes {
         long noOfTemperatureEvents =111;
 		generator .startSendingTemperatureReadings(noOfTemperatureEvents );
         generator.startSendingTemperatureReadings(noOfTemperatureEvents);
-        Thread.sleep(111111);
+        Thread.sleep(noOfTemperatureEvents *1000);
         
 	}
 
