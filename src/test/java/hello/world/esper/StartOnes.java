@@ -4,20 +4,14 @@ package hello.world.esper;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
-import com.espertech.esper.client.Configuration;
-import com.espertech.esper.client.EPServiceProvider;
-import com.espertech.esper.client.EPServiceProviderManager;
-import com.espertech.esper.client.EPStatement;
+import com.espertech.esper.client.Configuration; 
+import com.espertech.esper.client.EPServiceProviderManager; 
  
 
 class StartOnes {
  
 	TemperatureEventHandler temperatureEventHandler;
-	
-    private void sendEvent(Object theEvent) {
-    	temperatureEventHandler.epService.getEPRuntime().sendEvent(theEvent);
-    }
-    
+ 
 	@Before
     protected void setUp() throws Exception {
 		temperatureEventHandler = new TemperatureEventHandler();
@@ -28,13 +22,11 @@ class StartOnes {
         temperatureEventHandler.epService = EPServiceProviderManager.getProvider("TestStockTickerSimple", configuration);
 
 		
-        temperatureEventHandler.monitorEventSubscriber = new MonitorEventSubscriber();
-        // Listen to all limits to be set
+        temperatureEventHandler.monitorEventSubscriber = new MonitorEventSubscriber(); 
         String expressionText = temperatureEventHandler.monitorEventSubscriber.getStatement();
         temperatureEventHandler.monitorEventStatement = temperatureEventHandler.epService.getEPAdministrator().createEPL(expressionText);
         temperatureEventHandler.monitorEventStatement.setSubscriber(temperatureEventHandler.monitorEventSubscriber);
         
-		
 		
         temperatureEventHandler.criticalEventSubscriber = new CriticalEventSubscriber();
         String expressionText2 = temperatureEventHandler.criticalEventSubscriber.getStatement();

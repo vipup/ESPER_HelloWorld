@@ -83,7 +83,7 @@ public class TemperatureEventHandler {
      */
     public void handle(TemperatureEvent event) {
 
-        LOG.debug(event.toString());
+        LOG.trace(event.toString());
         epService.getEPRuntime().sendEvent(event);
 
     }

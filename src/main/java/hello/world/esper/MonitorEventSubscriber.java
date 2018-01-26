@@ -20,7 +20,7 @@ public class MonitorEventSubscriber implements StatementSubscriber {
     public String getStatement() {
 
         // Example of simple EPL with a Time Window
-        return "select avg(temperature) as avg_val from TemperatureEvent.win:time_batch(120 sec)";
+        return "select avg(temperature) as avg_val from TemperatureEvent.win:time_batch(10 sec)";
     }
 
     /**
@@ -33,9 +33,9 @@ public class MonitorEventSubscriber implements StatementSubscriber {
 
         StringBuilder sb = new StringBuilder();
         sb.append("---------------------------------");
-        sb.append("\n- [MONITOR120] Average Temp = " + avg);
+        sb.append("\n- [MONITOR] Average Temp = " + avg);
         sb.append("\n---------------------------------");
 
-        LOG.debug(sb.toString());
+        LOG.info(sb.toString());
     }
 }
