@@ -2,18 +2,18 @@ package hello.world.esper;
 
  
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import com.espertech.esper.client.Configuration; 
 import com.espertech.esper.client.EPServiceProviderManager; 
  
 
-class StartOnes {
+public class StartOnes {
  
 	TemperatureEventHandler temperatureEventHandler;
  
 	@Before
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
 		temperatureEventHandler = new TemperatureEventHandler();
 
         Configuration configuration = new Configuration();
@@ -46,8 +46,8 @@ class StartOnes {
 
 	
 	@Test
-	void test() throws Exception {
-		setUp() ;
+	public void test() throws Exception {
+		//setUp() ;
         // Start Demo
         RandomTemperatureEventGenerator generator = new RandomTemperatureEventGenerator(temperatureEventHandler);
         
