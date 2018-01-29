@@ -1,7 +1,7 @@
 package hello.world.esper;
 
 import org.junit.*;
-
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test; 
 import com.espertech.esper.client.Configuration; 
@@ -53,8 +53,9 @@ public class StartOnesTest {
         long noOfTemperatureEvents =111;
 		generator .startSendingTemperatureReadings(noOfTemperatureEvents );
         generator.startSendingTemperatureReadings(noOfTemperatureEvents);
-        Thread.sleep(noOfTemperatureEvents *1000);
+        Thread.sleep(noOfTemperatureEvents *111);
         
+        assertEquals(new Double(251.1), ((MonitorEventSubscriber)temperatureEventHandler.monitorEventSubscriber).avg,100);
 	}
 
 }

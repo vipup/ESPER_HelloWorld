@@ -29,7 +29,7 @@ public class MonitorEventSubscriber implements StatementSubscriber {
     public void update(Map<String, Double> eventMap) {
 
         // average temp over 10 secs
-        Double avg = (Double) eventMap.get("avg_val");
+    	avg = (Double) eventMap.get("avg_val");
 
         StringBuilder sb = new StringBuilder();
         sb.append("---------------------------------");
@@ -38,4 +38,5 @@ public class MonitorEventSubscriber implements StatementSubscriber {
 
         LOG.info(sb.toString());
     }
+    public Double avg;
 }

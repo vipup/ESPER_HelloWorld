@@ -44,7 +44,7 @@ public class RandomTemperatureEventGenerator {
                     temperatureEventHandler.handle(ve);
                     count++;
                     try {
-                        Thread.sleep(200);
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                         LOG.error("Thread Interrupted", e);
                     }
