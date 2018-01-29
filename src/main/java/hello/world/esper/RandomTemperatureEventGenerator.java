@@ -21,8 +21,8 @@ public class RandomTemperatureEventGenerator {
     /** The TemperatureEventHandler - wraps the Esper engine and processes the Events  */ 
     private TemperatureEventHandler temperatureEventHandler;
 
-    public RandomTemperatureEventGenerator(TemperatureEventHandler temperatureEventHandler2) {
-		this.temperatureEventHandler = temperatureEventHandler2;
+    public RandomTemperatureEventGenerator(TemperatureEventHandler par1) {
+		this.temperatureEventHandler = par1;
 	}
 
 
@@ -34,19 +34,22 @@ public class RandomTemperatureEventGenerator {
         ExecutorService xrayExecutor = Executors.newSingleThreadExecutor();
 
         xrayExecutor.submit(new Runnable() {
+        	final TemperatureEventHandler xxx = temperatureEventHandler ;
             public void run() {
-
                 LOG.debug(getStartingMessage());
                 
                 int count = 0;
                 while (count < noOfTemperatureEvents) {
-                    TemperatureEvent ve = new TemperatureEvent(new Random().nextInt(500), new Date());
-                    temperatureEventHandler.handle(ve);
-                    count++;
-                    try {
+                	try {
+	                    TemperatureEvent ve = new TemperatureEvent(new Random().nextInt(500), new Date());
+	                    xxx.handle(ve);
+	                    count++;
+                    
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
                         LOG.error("Thread Interrupted", e);
+                    } catch (Throwable e) {
+                        LOG.error("???", e);
                     }
                 }
 
