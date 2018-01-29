@@ -1,17 +1,16 @@
 package hello.world.esper;
 
- 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
+import org.junit.Before;
+import org.junit.Test; 
 import com.espertech.esper.client.Configuration; 
 import com.espertech.esper.client.EPServiceProviderManager; 
  
-
-public class StartOnes {
+public class StartOnesTest {
  
 	TemperatureEventHandler temperatureEventHandler;
- 
+  
 	@Before
     public void setUp() throws Exception {
 		temperatureEventHandler = new TemperatureEventHandler();
@@ -44,7 +43,7 @@ public class StartOnes {
         //epService.getEPRuntime().sendEvent(new TimerControlEvent(TimerControlEvent.ClockType.CLOCK_EXTERNAL));
     }
 
-	
+	 
 	@Test
 	public void test() throws Exception {
 		//setUp() ;
