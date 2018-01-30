@@ -104,22 +104,32 @@ public class StockTest {
 	    		+ "insert into Average100SecStock  select symbol,price,avg(price) from " + "StockTick(symbol='AAPL')#time(110 sec) ");	    
 	    cepStatement.addListener(new CEPListener());
 // step 2 :  split / agregate by 10 sec	    
-	    EPStatement cepStatement10sec = cepAdm.createEPL("select avg(price), count(price), min(price), max(price)  from Average100SecStock.win:time_batch(10 sec) ");
+	    EPStatement cepStatement10sec = cepAdm.createEPL("select avg(price), count(price), min(price), max(price)  from Average100SecStock.win:time_batch(3 sec) ");
 	    long start = System.currentTimeMillis();
 	    cepStatement10sec.addListener(new MyFilteredListener(start));
 	    
 	    // We generate a few ticks...
 	    for (int i = 0; i < 1000000; i++) {
 	        generateRandomTick(cepRT);
-
 	    }	
 	    System.out.println("generating is done in "+ (System.currentTimeMillis()-start )+" miliseconds");
         try {
-        	Thread.sleep(11110);
+        	Thread.sleep(15110);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+//	    // We generate a few ticks...
+//	    for (int i = 0; i < 1000000; i++) {
+//	        generateRandomTick(cepRT);
+//	    }	
+//	    System.out.println("generating is done in "+ (System.currentTimeMillis()-start )+" miliseconds");
+//        try {
+//        	Thread.sleep(25110);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 }
