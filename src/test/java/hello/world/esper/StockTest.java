@@ -25,9 +25,16 @@ public class StockTest {
 
     public static class MyFilteredListener implements UpdateListener { 
    	 
-        public void update(EventBean[] newData, EventBean[] oldData) { 
+        private long start;
+
+		public MyFilteredListener(long start) {
+			this.start = start;
+		}
+
+		public void update(EventBean[] newData, EventBean[] oldData) { 
             //SystemUtil.println("Event received, old: %s, new: %s.", ObjToStringUtil.objToString(oldData), ObjToStringUtil.objToString(newData));
-        	System.out.println("."+ ObjUtils.objToString(oldData) + " /// "+ ObjUtils.objToString(newData));
+			long sinceStart = System.currentTimeMillis() - start;
+        	System.out.println("+"+sinceStart+" ms::"+ ObjUtils.objToString(oldData) + " /// "+ ObjUtils.objToString(newData));
         } 
     }
     
@@ -69,7 +76,8 @@ public class StockTest {
     public static void generateRandomTick(EPRuntime cepRT) { 
         double price = generator.nextDouble() * 100; 
         long timeStamp = System.currentTimeMillis(); 
-        String symbol = "AAPL"; 
+        String [] symbols = {"MSFT","IBM","GOOG","AAPL","AAPL","AAPL","AAPL","YAHO"};
+		String symbol = symbols [(int) (price % symbols.length)]; 
         Tick tick = new Tick(symbol, price, timeStamp); 
         //System.out.println("Sending tick:" + tick); 
         cepRT.sendEvent(tick); 
@@ -90,26 +98,28 @@ public class StockTest {
 //	    EPStatement cepStatement = cepAdm.createEPL("select symbol,price,avg(price) from " + "StockTick(symbol='AAPL').win:time_batch(10 sec) ");
 // Average on 10 sec	    
 //	    EPStatement cepStatement = cepAdm.createEPL("select symbol,price,avg(price) from " + "StockTick(symbol='AAPL')#time(110 sec) ");
-// ++	    insert into ThroughputPerFeed 
+// ++	    insert into ThroughputPerFeed
+// step 1 : filter	    'AAPL'
 	    EPStatement cepStatement = cepAdm.createEPL(""
 	    		+ "insert into Average100SecStock  select symbol,price,avg(price) from " + "StockTick(symbol='AAPL')#time(110 sec) ");	    
-
 	    cepStatement.addListener(new CEPListener());
-	    
-	    EPStatement cepStatement10sec = cepAdm.createEPL("select avg(price), count(price), min(price), max(price)  from Average100SecStock.win:time_batch(10 sec) ");	    
-	      
-	    cepStatement10sec.addListener(new MyFilteredListener());
+// step 2 :  split / agregate by 10 sec	    
+	    EPStatement cepStatement10sec = cepAdm.createEPL("select avg(price), count(price), min(price), max(price)  from Average100SecStock.win:time_batch(10 sec) ");
+	    long start = System.currentTimeMillis();
+	    cepStatement10sec.addListener(new MyFilteredListener(start));
 	    
 	    // We generate a few ticks...
-	    for (int i = 0; i < 6000; i++) {
+	    for (int i = 0; i < 1000000; i++) {
 	        generateRandomTick(cepRT);
-	        try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	    }		
+
+	    }	
+	    System.out.println("generating is done in "+ (System.currentTimeMillis()-start )+" miliseconds");
+        try {
+        	Thread.sleep(11110);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
