@@ -101,7 +101,7 @@ public class StockTest {
 // ++	    insert into ThroughputPerFeed
 // step 1 : filter	    'AAPL'
 	    EPStatement cepStatement = cepAdm.createEPL(""
-	    		+ "insert into Average100SecStock  select symbol,price,avg(price) from " + "StockTick(symbol='AAPL')#time(110 sec) ");	    
+	    		+ "insert into Average100SecStock  select symbol,price,avg(price) from " + "StockTick(symbol='AAPL').win:time(110 sec) ");	    
 	    cepStatement.addListener(new CEPListener());
 // step 2 :  split / agregate by 10 sec	    
 	    EPStatement cepStatement10sec = cepAdm.createEPL("select avg(price), count(price), min(price), max(price)  from Average100SecStock.win:time_batch(3 sec) ");
