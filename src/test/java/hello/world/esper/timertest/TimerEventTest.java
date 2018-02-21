@@ -69,16 +69,26 @@ public class TimerEventTest {
 		EPStatement sensorCTRL = cepMgr.getEPAdministrator().createEPL( sensorControllerQ );
 		
 		sensorCTRL.addListener(new SensorBreakListener());
+
+		//select * from pattern[every StockTickEvent(symbol='GE')]
+		String sensorRepairQ = 
+				"select * from pattern["
+				+ "every [3] (timer:interval(7 sec) and not TemperatureEvent)"
+				+ " ]";
+		EPStatement repairCTRL = cepMgr.getEPAdministrator().createEPL( sensorRepairQ );
+		
+		repairCTRL.addListener(new SensorRepair());
+	
 	}
 
 	@Test
 	public void test() throws InterruptedException {
 		Thread.sleep(11111);
 		assertEquals( "something wrong withing 11 sec! ", 11, TimerFunction.getUpdateCounter() ); 
-	}
-
-	@Test
-	public void testIsSensorBrocken() throws InterruptedException {
+//	}
+//
+//	@Test
+//	public void testIsSensorBrocken() throws InterruptedException {
 		// sensor is brocken
 		assertEquals( "something wrong withing 11 sec! ", 1, SensorBreakListener.getUpdateCounter() );
         // prevent firing sensor-checker 
@@ -86,10 +96,21 @@ public class TimerEventTest {
 		cepMgr.getEPRuntime().sendEvent(event);
 		Thread.sleep(5111);		
 		// sensor gives data in last 10 sec
-		assertEquals( "something wrong withing 11 sec! ", 1, SensorBreakListener.getUpdateCounter() );
+		assertEquals( "something wrong withing 11+5 sec! ", 1, SensorBreakListener.getUpdateCounter() );
 		Thread.sleep(5111);
 		// brocken again...
-		assertEquals( "something wrong withing 11 sec! ", 2, SensorBreakListener.getUpdateCounter() );
+		assertEquals( "something wrong withing 11+5+5 sec! ", 2, SensorBreakListener.getUpdateCounter() );
+//	}
+//	
+//	@Test
+//	public void testIsSensorHasToBerepaired() throws InterruptedException {
+		Thread.sleep(5111);
+		assertEquals( "something wrong with Repair 5+5+5 < 3*7 sec! ", 0, SensorRepair.getUpdateCounter() );
+		Thread.sleep(5111);
+		assertEquals( "something wrong with Repair 5+5+5+5 < 3*7 sec! ", 0, SensorRepair.getUpdateCounter() );
+		Thread.sleep(5111);
+		assertEquals( "something wrong with Repair 5+5+5+5+5 > 3*7 sec! ", 1, SensorRepair.getUpdateCounter() );
+		Thread.sleep(5111);
+		assertEquals( "something wrong with Repair 5+5+5+5+5+5  > 3*7 sec! ", 1, SensorRepair.getUpdateCounter() );
 	}
-	
 }
