@@ -3,8 +3,7 @@ package hello.world.esper.timertest;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
-import org.junit.Test;
-import org.w3c.dom.Node;
+import org.junit.Test; 
 
 import com.espertech.esper.client.Configuration;
 import com.espertech.esper.client.ConfigurationOperations;
@@ -85,13 +84,10 @@ public class TimerEventTest {
 	public void test() throws InterruptedException {
 		Thread.sleep(11111);
 		assertEquals( "something wrong withing 11 sec! ", 11, TimerFunction.getUpdateCounter() ); 
-//	}
-//
-//	@Test
-//	public void testIsSensorBrocken() throws InterruptedException {
 		// sensor is brocken
 		assertEquals( "something wrong withing 11 sec! ", 1, SensorBreakListener.getUpdateCounter() );
-        // prevent firing sensor-checker 
+
+		// prevent firing sensor-checker 
 		TemperatureEvent event = new TemperatureEvent();
 		cepMgr.getEPRuntime().sendEvent(event);
 		Thread.sleep(5111);		
@@ -100,10 +96,7 @@ public class TimerEventTest {
 		Thread.sleep(5111);
 		// brocken again...
 		assertEquals( "something wrong withing 11+5+5 sec! ", 2, SensorBreakListener.getUpdateCounter() );
-//	}
-//	
-//	@Test
-//	public void testIsSensorHasToBerepaired() throws InterruptedException {
+		
 		Thread.sleep(5111);
 		assertEquals( "something wrong with Repair 5+5+5 < 3*7 sec! ", 0, SensorRepair.getUpdateCounter() );
 		Thread.sleep(5111);
